@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(itemBuilder: (ctx, index) {
         return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const AnimationTestPage1()));
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => const AnimationTestPage1()));
           },
           child: Container(
             color: Color.fromARGB(

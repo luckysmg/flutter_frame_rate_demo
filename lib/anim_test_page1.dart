@@ -12,15 +12,21 @@ class AnimationTestPage1 extends StatefulWidget {
 class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProviderStateMixin {
   late AnimationController controller;
 
+  bool is120HZ = false;
+
   @override
   void initState() {
-    controller = AnimationController(vsync: this, frameRate: FrameRate.fps30, lowerBound: 0, upperBound: 2 * 3.14159)
+    setupAnimationController();
+    super.initState();
+  }
+
+  void setupAnimationController() {
+    controller = AnimationController(
+        vsync: this, frameRate: is120HZ ? FrameRate.fps120 : FrameRate.fps24, lowerBound: 0, upperBound: 2 * 3.14159)
       ..addListener(() {
-        print("更新");
         setState(() {});
       });
     controller.repeat(period: const Duration(seconds: 2));
-    super.initState();
   }
 
   @override
@@ -42,24 +48,40 @@ class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProv
               child: Container(
                 alignment: Alignment.center,
                 color: Colors.red,
-                height: 100,
-                width: 100,
+                height: 150,
+                width: 150,
                 child: const Text(
-                  "30fps",
+                  "Text",
                   style: TextStyle(fontSize: 30),
                 ),
               ),
             ),
             const SizedBox(
+              height: 30,
+            ),
+            CupertinoButton(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+                color: Colors.orange,
+                child: Text(
+                  'Make animation frame rate more${is120HZ ? ' slow' : ' fastest'}',
+                  style: const TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  controller.stop();
+                  controller.dispose();
+                  is120HZ = !is120HZ;
+                  setupAnimationController();
+                }),
+            const SizedBox(
               height: 20,
             ),
             CupertinoButton.filled(
-                child: const Text('enter next page'),
+                child: const Text('Enter next page'),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (ctx) {
+                  Navigator.push(context, CupertinoPageRoute(builder: (ctx) {
                     return const DragWidgetPage();
                   }));
-                })
+                }),
           ],
         ),
       ),
