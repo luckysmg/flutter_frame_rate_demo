@@ -13,6 +13,7 @@ class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProv
   late AnimationController controller;
 
   bool is120HZ = false;
+  FrameRate lowFrameRate = FrameRate.fps24;
 
   @override
   void initState() {
@@ -22,7 +23,7 @@ class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProv
 
   void setupAnimationController() {
     controller = AnimationController(
-        vsync: this, frameRate: is120HZ ? FrameRate.fps120 : FrameRate.fps24, lowerBound: 0, upperBound: 2 * 3.14159)
+        vsync: this, frameRate: lowFrameRate, lowerBound: 0, upperBound: 2 * 3.14159)
       ..addListener(() {
         setState(() {});
       });
@@ -38,7 +39,9 @@ class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(is120HZ ? "fast rate 120HZ":"low rate 24HZ"),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -67,10 +70,8 @@ class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProv
                   style: const TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
-                  controller.stop();
-                  controller.dispose();
                   is120HZ = !is120HZ;
-                  setupAnimationController();
+                  controller.frameRate = is120HZ ? FrameRate.fastest : lowFrameRate;
                 }),
             const SizedBox(
               height: 20,
