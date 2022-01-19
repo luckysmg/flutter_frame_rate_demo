@@ -13,7 +13,7 @@ class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProv
   late AnimationController controller;
 
   bool is120HZ = false;
-  FrameRate lowFrameRate = FrameRate.fps30;
+  FrameRate lowFrameRate = FrameRate.fps10;
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _AnimationTestPage1State extends State<AnimationTestPage1> with TickerProv
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(is120HZ ? "fast rate 120HZ":"low rate 30HZ"),
+        title: Text(is120HZ ? "fast rate 120HZ":"low rate 10HZ"),
       ),
       body: Center(
         child: Column(
